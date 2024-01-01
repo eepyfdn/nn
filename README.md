@@ -6,15 +6,46 @@
 
 Flakes without boilerplate.
 
-```nix
-{
-  inputs.__functor.url = "github:jack5079/nn";
-  inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
-  outputs = n: n {};
-}
-```
+  ```nix
+  {
+    inputs.__functor.url = "github:jack5079/nn";
+    inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
+    outputs = n: n {};
+  }
+  ```
 
 ## Configurations using `nn`
 
 - [Jack](https://github.com/jack5079/dotfiles)
 - [Charlie](https://github.com/caffeinatedcharlie/dotfiles)
+
+## Reference
+
+A folder structure like
+
+```
+oxymoron/
+  package.nix
+  nixos-module.nix
+mollerbot@x86_64-linux/
+  configuration.nix
+flake.nix
+```
+
+gets turned into a flake output like
+
+```nix
+{ nixpkgs, flake-utils }@inputs:
+
+flake-utils.lib.eachDefaultSystem
+  (system: {
+    packages.oxymoron = nixpkgs.legacyPackages.${system}.callPackage ./oxymoron/package.nix;
+  }) // {
+  nixosModules.oxymoron = import ./oxymoron/nixos-module.nix;
+  nixosConfigurations.mollerbot = nixpkgs.lib.nixosSystem {
+    system = "x86_64-linux";
+    specialArgs = { inherit inputs; };
+    modules = [ "./mollerbot@x86_64-linux/configuration.nix" ];
+  };
+}
+```
