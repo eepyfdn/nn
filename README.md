@@ -14,11 +14,6 @@ Flakes without boilerplate.
   }
   ```
 
-## Configurations using `nn`
-
-- [Jack](https://github.com/jack5079/dotfiles)
-- [Charlie](https://github.com/caffeinatedcharlie/dotfiles)
-
 ## Reference
 
 A folder structure like
