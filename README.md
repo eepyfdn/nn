@@ -8,9 +8,9 @@ Flakes without boilerplate.
 
   ```nix
   {
+    outputs = n: n {};
     inputs.__functor.url = "github:eepyfdn/nn";
     inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
-    outputs = n: n {};
   }
   ```
 
