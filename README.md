@@ -39,8 +39,8 @@ gets turned into a flake output like
       "x86_64-linux"
     ] (system: function nixpkgs.legacyPackages.${system});
 in forAllSystems
-  (system: {
-    packages.oxymoron = nixpkgs.legacyPackages.${system}.callPackage ./oxymoron/package.nix;
+  (pkgs: {
+    packages.oxymoron = pkgs.callPackage ./oxymoron/package.nix;
   }) // {
   nixosModules.oxymoron = import ./oxymoron/nixos-module.nix;
   nixosConfigurations.mollerbot = nixpkgs.lib.nixosSystem {
