@@ -30,9 +30,15 @@ flake.nix
 gets turned into a flake output like
 
 ```nix
-{ nixpkgs, flake-utils }@inputs:
-
-flake-utils.lib.eachDefaultSystem
+{ nixpkgs, ... }@inputs: let
+  forAllSystems = function:
+    nixpkgs.lib.genAttrs [
+      "aarch64-darwin"
+      "aarch64-linux"
+      "x86_64-darwin"
+      "x86_64-linux"
+    ] (system: function nixpkgs.legacyPackages.${system});
+in forAllSystems
   (system: {
     packages.oxymoron = nixpkgs.legacyPackages.${system}.callPackage ./oxymoron/package.nix;
   }) // {
